@@ -10,7 +10,7 @@ posts = []
 def home():
     return '<h2>Vintage Blog Live</h2><a href="/blog">Go to Blog</a>'
 
-# PROFILE PAGE (your aesthetic page)
+# PROFILE PAGE
 @app.route("/user/<username>")
 def profile(username):
     return f"""
@@ -97,11 +97,13 @@ def add_post():
     return """
     <h2>Add Blog</h2>
     <form method="POST">
-        <input name="title" placeholder="Title"><br><br>
-        <input name="image" placeholder="Image URL"><br><br>
-        <textarea name="content" placeholder="Content"></textarea><br><br>
+        <input name="title" placeholder="Title" required><br><br>
+        <input name="image" placeholder="Image URL" required><br><br>
+        <textarea name="content" placeholder="Content" required></textarea><br><br>
         <button type="submit">Post</button>
     </form>
+    <br>
+    <a href="/blog">View Blog</a>
     """
 
 # BLOG PAGE
