@@ -1,9 +1,14 @@
 from flask import Flask, request, redirect
 import os
+import json
 
 app = Flask(__name__)
 
-posts = []
+try:
+    with open("posts.json", "r") as f:
+        posts = json.load(f)
+except:
+    posts = []
 
 # HOME
 @app.route("/")
@@ -90,6 +95,15 @@ def add_post():
                 "content": content,
                 "image": image
             })
+            if title and content and image:
+    posts.append({
+        "title": title,
+        "content": content,
+        "image": image
+    })
+
+    with open("posts.json", "w") as f:
+        json.dump(posts, f)
 
         return redirect("/blog")
 
