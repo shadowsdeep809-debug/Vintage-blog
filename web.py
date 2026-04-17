@@ -4,17 +4,19 @@ import json
 
 app = Flask(__name__)
 
+# LOAD POSTS (permanent storage)
 try:
     with open("posts.json", "r") as f:
         posts = json.load(f)
 except:
     posts = []
 
-# HOME
+# HOME → redirect to your profile
 @app.route("/")
 def home():
-    return redirect("/user/zara_world_hara")
-# PROFILE PAGE
+    return redirect("/user/shadowsdeep809")
+
+# PROFILE PAGE (vintage design)
 @app.route("/user/<username>")
 def profile(username):
     return f"""
@@ -95,15 +97,10 @@ def add_post():
                 "content": content,
                 "image": image
             })
-            if title and content and image:
-    posts.append({
-        "title": title,
-        "content": content,
-        "image": image
-    })
 
-    with open("posts.json", "w") as f:
-        json.dump(posts, f)
+            # SAVE TO FILE (permanent)
+            with open("posts.json", "w") as f:
+                json.dump(posts, f)
 
         return redirect("/blog")
 
