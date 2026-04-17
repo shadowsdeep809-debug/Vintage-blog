@@ -8,8 +8,7 @@ posts = []
 # HOME
 @app.route("/")
 def home():
-    return '<h2>Vintage Blog Live</h2><a href="/blog">Go to Blog</a>'
-
+    return redirect("/user/zara_world_hara")
 # PROFILE PAGE
 @app.route("/user/<username>")
 def profile(username):
