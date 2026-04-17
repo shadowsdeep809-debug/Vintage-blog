@@ -14,7 +14,7 @@ except:
 # HOME → redirect to your profile
 @app.route("/")
 def home():
-    return redirect("/user/shadowsdeep809")
+    return redirect("/user/Zara")
 
 # PROFILE PAGE (vintage design)
 @app.route("/user/<username>")
