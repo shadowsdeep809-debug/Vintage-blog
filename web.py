@@ -1,14 +1,83 @@
 from flask import Flask, request, redirect
+import os
 
 app = Flask(__name__)
 
 posts = []
 
-# Home route (prevents "broken" root)
+# HOME
 @app.route("/")
 def home():
-    return '<h2>Server running</h2><a href="/blog">Go to Blog</a>'
+    return '<h2>Vintage Blog Live</h2><a href="/blog">Go to Blog</a>'
 
+# PROFILE PAGE (your aesthetic page)
+@app.route("/user/<username>")
+def profile(username):
+    return f"""
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {{
+                margin: 0;
+                font-family: Georgia, serif;
+                background: linear-gradient(rgba(120,0,0,0.6), rgba(60,0,0,0.9)),
+                            url('https://images.unsplash.com/photo-1520975922284-9c6a4c0c4b6c');
+                background-size: cover;
+                color: #f5e6e6;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }}
+
+            .card {{
+                background: rgba(255,240,240,0.9);
+                color: #3b1f1f;
+                padding: 25px;
+                border-radius: 20px;
+                width: 90%;
+                max-width: 350px;
+                text-align: center;
+            }}
+
+            img {{
+                width: 100px;
+                border-radius: 50%;
+                margin-bottom: 10px;
+            }}
+
+            .btn {{
+                display: block;
+                background: #8b0000;
+                color: white;
+                padding: 10px;
+                border-radius: 10px;
+                margin-top: 10px;
+                text-decoration: none;
+            }}
+        </style>
+    </head>
+
+    <body>
+        <div class="card">
+            <img src="https://via.placeholder.com/150">
+            <h2>@{username}</h2>
+            <p>Vintage cinema | timeless frames | old stories</p>
+
+            <a class="btn" href="https://instagram.com/{username}" target="_blank">
+                Visit Instagram
+            </a>
+
+            <a class="btn" href="/blog">
+                Read Blog
+            </a>
+        </div>
+    </body>
+    </html>
+    """
+
+# ADD BLOG
 @app.route("/add", methods=["GET", "POST"])
 def add_post():
     if request.method == "POST":
@@ -28,32 +97,29 @@ def add_post():
     return """
     <h2>Add Blog</h2>
     <form method="POST">
-        <input name="title" placeholder="Title" required><br><br>
-        <input name="image" placeholder="Image URL" required><br><br>
-        <textarea name="content" placeholder="Content" required></textarea><br><br>
+        <input name="title" placeholder="Title"><br><br>
+        <input name="image" placeholder="Image URL"><br><br>
+        <textarea name="content" placeholder="Content"></textarea><br><br>
         <button type="submit">Post</button>
     </form>
-    <br>
-    <a href="/blog">View Blog</a>
     """
 
+# BLOG PAGE
 @app.route("/blog")
 def blog():
     html = "<h1>Vintage Blog</h1><a href='/add'>+ Add New</a><hr>"
 
     for post in posts:
         html += f"""
-        <div style='margin-bottom:30px'>
+        <div style='background:white;padding:15px;border-radius:10px;margin:20px'>
+            <img src='{post['image']}' style='width:100%;border-radius:10px'>
             <h2>{post['title']}</h2>
-            <img src='{post['image']}' width='100%'>
             <p>{post['content']}</p>
-            <hr>
         </div>
         """
 
     return html
 
-import os
-
+# RUN
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
